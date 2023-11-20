@@ -1,4 +1,4 @@
-export const getWinnerNums = (arr1,arr2) => {
+const getWinnerNums = (arr1,arr2) => {
     let frequency = {};
     let result = [];
   
@@ -19,3 +19,5 @@ export const getWinnerNums = (arr1,arr2) => {
     
     return result
   }
+
+  export default getWinnerNums;

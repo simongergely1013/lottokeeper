@@ -3,25 +3,22 @@ import {combineReducers, applyMiddleware} from 'redux';
 import { legacy_createStore as createStore } from "redux";
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import user from './user';
-import owner from './owner';
+import data from './data';
 
-const userPersistConfig = {
-    key: 'user',
+const dataPersistConfig = {
+    key: 'data',
     storage,
-    whitelist: ['user']
+    // whitelist: ['user']
   }
 
-
 const rootReducer = combineReducers({
-    user: persistReducer(userPersistConfig, user),
-    owner
+    data: persistReducer(dataPersistConfig, data),
 });
 
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['user']
+    // blacklist: ['user', 'owner']
   }
 
   const persistedReducer = persistReducer(persistConfig, rootReducer)
