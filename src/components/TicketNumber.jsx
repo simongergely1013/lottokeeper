@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { placeNumber } from "../store/user/actions";
+import { placeNumberUser } from "../store/data/actions";
 
 const styles = {
   number:
@@ -9,7 +9,7 @@ const styles = {
 
 const TicketNumber = ({ number }) => {
   const [isActive, setIsActive] = useState(false);
-  const { currentSelectedNums } = useSelector((state) => state.user);
+  const { currentSelectedNums } = useSelector((state) => state.data.user);
   const dispatch = useDispatch();
 
   const handleNumClick = (num) => {
@@ -17,7 +17,7 @@ const TicketNumber = ({ number }) => {
       return;
     } else {
       setIsActive(!isActive);
-      dispatch(placeNumber(num));
+      dispatch(placeNumberUser(num));
     }
   };
 
@@ -31,7 +31,7 @@ const TicketNumber = ({ number }) => {
     <div
       key={number}
       className={`${styles.number} ${
-        isActive && "bg-green-500 text-slate-100"
+        isActive && "bg-green-600 text-slate-100"
       }`}
       onClick={() => handleNumClick(number)}
     >

@@ -3,17 +3,17 @@ import TicketNumber from "./TicketNumber";
 import { useSelector, useDispatch } from "react-redux";
 import {
   startLotto,
-  playNew,
-  reset,
-  clearTicketHistory,
-} from "../store/user/actions";
+  playNewUser,
+  resetAll,
+  clearTicketHistoryUser,
+} from "../store/data/actions";
 
 const styles = {
-  main: "w-9/12 h-full flex flex-col items-center ",
+  main: "w-full h-full flex flex-col items-center px-16 py-10 overflow-y-auto",
   title: "text-2xl text-slate-100 font-bold tracking-wider",
   ticketContainer:
     "w-[66%] flex flex-col justify-center items-center py-6 border",
-  numsContainer: "border-y w-2/5 mt-5 pl-3 py-3 flex flex-wrap",
+  numsContainer: "border-y w-2/5 h-[200px] mt-5 pl-3 py-3 flex flex-wrap",
   numTicket:
     "w-6 h-6 rounded-full bg-slate-100 text-center m-1 cursor-pointer hover:bg-sky-500 hover:text-slate-100",
   ticketSideBar:
@@ -43,29 +43,30 @@ for (let i = 1; i < 40; i++) {
 
 const UserGame = () => {
   const {
+    ticketHistory,
     currentSelectedNums,
     currentWinners,
     numsWon,
     completedTickets,
     totalPrice,
-  } = useSelector((state) => state.user);
+  } = useSelector((state) => state.data.user);
+
   const dispatch = useDispatch();
-  const { ticketHistory } = useSelector((state) => state.user.user);
 
   const handleStart = () => {
     dispatch(startLotto);
   };
 
   const handleNewTicket = () => {
-    dispatch(playNew);
+    dispatch(playNewUser);
   };
 
   const handleReset = () => {
-    dispatch(reset);
+    dispatch(resetAll);
   };
 
   const handleClearTicketHistory = () => {
-    dispatch(clearTicketHistory);
+    dispatch(clearTicketHistoryUser);
   };
 
   return (
@@ -126,7 +127,7 @@ const UserGame = () => {
         </div>
       </div>
       {ticketHistory.length !== 0 && (
-        <div className="w-full mt-40">
+        <div className="w-full mt-4">
           <div className={styles.yourTickets}>
             <h1 className="text-xl mb-2">Your tickets</h1>
             <button
@@ -135,6 +136,14 @@ const UserGame = () => {
             >
               clear
             </button>
+          </div>
+          <div className={styles.ticketRow}>
+            <div className="w-[10%]"></div>
+            <div className="w-[30%] flex">
+              <div className="w-full">Numbers played</div>
+            </div>
+            <div className="w-[30%]">Date played</div>
+            <div className="w-[30%]">Ticket ID</div>
           </div>
           <div className={styles.ticketHistory}>
             {ticketHistory.map((ticket, index) => (
