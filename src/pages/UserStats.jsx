@@ -1,40 +1,81 @@
 import React from "react";
 import formatBalance from "../utilities/formatBalance";
-import { useSelector } from "react-redux";
+import { FaSort } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  sortTicketHistoryByHitsUser,
+  sortTicketHistoryByPayoutUser,
+  sortTicketHistoryByDateUser,
+} from "../store/data/actions";
 
 const styles = {
-  title: "text-2xl text-slate-100 font-bold tracking-wider mt-4",
-  yourTickets: "flex justify-between items-center text-slate-100 gap-3",
+  title:
+    "text-2xl bg-slate-900 tracking-widest p-4 text-slate-100 font-bold mt-4",
+  ticketHistoryTitleDiv:
+    "flex items-center bg-slate-900 text-slate-100 p-4 mb-1",
   ticketHistory: "w-full flex flex-col",
   ticketRow:
-    "w-full flex items-center justify-between p-2 border-b text-slate-100",
+    "w-full flex items-center justify-between p-4 mb-1 rounded text-slate-100 bg-slate-900 tracking-widest",
   ticketRowNum:
     "w-6 h-6 flex justify-center items-center border rounded-full px-2 mr-2 text-xs",
 };
 
 const UserStats = () => {
   const { ticketHistory, name } = useSelector((state) => state.data.user);
+  const dispatch = useDispatch();
   const totalPaidOut = ticketHistory.reduce(
     (accumulator, currentValue) => accumulator + currentValue.amountWon,
     0
   );
+
+  const handleSortHits = () => {
+    dispatch(sortTicketHistoryByHitsUser);
+  };
+
+  const handleSortPayout = () => {
+    dispatch(sortTicketHistoryByPayoutUser);
+  };
+
+  const handleSortDate = () => {
+    dispatch(sortTicketHistoryByDateUser);
+  };
 
   return (
     <div className="w-full h-full px-16 py-10">
       <h1 className={styles.title}>{name}'s Statistics</h1>
       {ticketHistory.length !== 0 && (
         <div className="w-full mt-10">
-          <div className={styles.yourTickets}>
-            <h1 className="text-xl mb-2">Your tickets</h1>
+          <div className={styles.ticketHistoryTitleDiv}>
+            <h1 className="text-xl tracking-widest pl-2 mb-2">
+              Ticket history
+            </h1>
           </div>
           <div className={styles.ticketRow}>
             <div className="w-[5%]"></div>
             <div className="w-[20%] flex">
               <div className="w-full">Numbers played</div>
             </div>
-            <div className="w-[5%]">Hits</div>
-            <div className="w-[15%]">Amount paid out</div>
-            <div className="w-[25%]">Date played</div>
+            <div className="w-[5%] flex items-center gap-2">
+              Hits{" "}
+              <FaSort
+                onClick={() => handleSortHits()}
+                className="cursor-pointer"
+              />
+            </div>
+            <div className="w-[15%] flex items-center gap-2">
+              Amount paid out{" "}
+              <FaSort
+                onClick={() => handleSortPayout()}
+                className="cursor-pointer"
+              />
+            </div>
+            <div className="w-[25%] flex items-center gap-2">
+              Date played{" "}
+              <FaSort
+                onClick={() => handleSortDate()}
+                className="cursor-pointer"
+              />
+            </div>
             <div className="w-[30%]">Ticket ID</div>
           </div>
           <div className={styles.ticketHistory}>
@@ -60,10 +101,10 @@ const UserStats = () => {
               </div>
             ))}
           </div>
-          <div className="text-slate-100 font-bold tracking-wider mt-4 border-b">
+          <div className="bg-slate-900 text-slate-100 tracking-widest p-4 mt-2 rounded mb-1">
             <h2>
               Total amount paid out:{" "}
-              <span className="pl-1">{formatBalance(totalPaidOut)}</span>
+              <span className="pl-1">{formatBalance(totalPaidOut)} AK</span>
             </h2>
           </div>
         </div>

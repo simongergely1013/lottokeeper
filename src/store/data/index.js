@@ -10,8 +10,12 @@ export const ACTIONS = {
         PLACE_NUMBER:'PLACE_NUMBER',
         COMPLETE_TICKET: 'COMPLETE_TICKET',
         START_LOTTO: 'START_LOTTO',
+        CLEAR_CURRENT_SELECTED_NUMS: 'CLEAR_CURRENT_SELECTED_NUMS',
         PLAY_NEW: 'PLAY_NEW',
         CLEAR_TICKET_HISTORY: 'CLEAR_TICKET_HISTORY',
+        SORT_TICKET_HISTORY_BY_HITS: 'SORT_TICKET_HISTORY_BY_HITS',
+        SORT_TICKET_HISTORY_BY_PAYOUT: 'SORT_TICKET_HISTORY_BY_PAYOUT',
+        SORT_TICKET_HISTORY_BY_DATE: 'SORT_TICKET_HISTORY_BY_DATE'
     },
     OWNER:{
 
@@ -30,6 +34,9 @@ const initialState = {
         numsWon: [],
         completedTickets: 0,
         totalPrice: 0,
+        hitsDescending: false,
+        payoutDescending: false,
+        dateDescending: false,
     }, 
     owner:{
         name: "OWNER",
@@ -89,6 +96,14 @@ const dataReducer = (state = initialState, action) => {
                     ownerBalance: updateOwnerBalance(state.owner.ownerBalance, state.user.currentSelectedNums, action.payload),
                 }
             } 
+         case ACTIONS.USER.CLEAR_CURRENT_SELECTED_NUMS:
+            return{
+                ...state,
+                user: {
+                    ...state.user,
+                    currentSelectedNums: []
+                }
+            }   
         case ACTIONS.USER.PLAY_NEW:
             return{
                 ...state,
@@ -130,7 +145,34 @@ const dataReducer = (state = initialState, action) => {
                     completedTickets: 0,
                     totalPrice: 0,
                }
-            }      
+            }   
+            case ACTIONS.USER.SORT_TICKET_HISTORY_BY_HITS:
+                return{
+                    ...state,
+                    user:{
+                        ...state.user,
+                        ticketHistory: action.payload,
+                        hitsDescending : !state.user.hitsDescending
+                    }
+                }    
+                case ACTIONS.USER.SORT_TICKET_HISTORY_BY_PAYOUT:
+                    return{
+                        ...state,
+                        user:{
+                            ...state.user,
+                            ticketHistory: action.payload,
+                            payoutDescending : !state.user.payoutDescending
+                        }
+                    }
+                    case ACTIONS.USER.SORT_TICKET_HISTORY_BY_DATE:
+                        return{
+                            ...state,
+                            user:{
+                                ...state.user,
+                                ticketHistory: action.payload,
+                                dateDescending : !state.user.dateDescending
+                            }
+                        }                   
             default:
                 return state;    
     }

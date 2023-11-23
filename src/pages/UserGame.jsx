@@ -1,12 +1,7 @@
 import React from "react";
 import TicketNumber from "../components/TicketNumber";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  startLotto,
-  playNewUser,
-  resetAll,
-  clearTicketHistoryUser,
-} from "../store/data/actions";
+import { startLotto, playNewUser, resetAll } from "../store/data/actions";
 
 const styles = {
   main: "w-full h-full flex flex-col items-center px-16 py-10 overflow-y-auto",
@@ -26,14 +21,15 @@ const styles = {
     "w-9/12 rounded bg-blue-600 text-slate-100 font-bold tracking-widest px-3 py-2 drop-shadow-xl",
   winnerNumsWrapper:
     "w-1/3 flex flex-col justify-center gap-5 items-center mt-10",
-  winnerNumsText: "h-10 text-slate-100 text-xl",
+  winnerNumsText: "h-10 text-slate-100 text-xl tracking-widest",
   winnerNumsContainer:
-    "w-full h-10 flex justify-center items-center gap-2 text-slate-900 text-xl p-3 mb-4",
-  numWinner: "w-10 h-10 flex justify-center items-center border rounded-full",
+    "w-full h-10 flex justify-center items-center gap-4 text-slate-900 text-xl p-3 mb-4",
+  numWinner:
+    "w-10 h-10 flex justify-center items-center border border-2 rounded-full text-slate-100",
   yourTickets: "flex justify-between items-center text-slate-100 gap-3",
   ticketHistory: "w-full flex flex-col",
   ticketRow:
-    "w-full flex items-center justify-between p-2 border-b text-slate-900",
+    "w-full flex items-center justify-between p-4 rounded bg-slate-900 text-slate-200 tracking-widest mb-1",
   ticketRowNum:
     "w-6 h-6 flex justify-center items-center border rounded-full px-2 mr-2 text-xs",
 };
@@ -46,13 +42,12 @@ for (let i = 1; i < 40; i++) {
 const UserGame = () => {
   const {
     ticketHistory,
-    currentSelectedNums,
     currentWinners,
     numsWon,
     completedTickets,
     totalPrice,
   } = useSelector((state) => state.data.user);
-
+  const currentTicket = ticketHistory[ticketHistory.length - 1];
   const dispatch = useDispatch();
 
   const handleStart = () => {
@@ -65,10 +60,6 @@ const UserGame = () => {
 
   const handleReset = () => {
     dispatch(resetAll);
-  };
-
-  const handleClearTicketHistory = () => {
-    dispatch(clearTicketHistoryUser);
   };
 
   return (
@@ -87,9 +78,8 @@ const UserGame = () => {
             Completed tickets: <span className="ml-1">{completedTickets}</span>
           </div>
           <div className={styles.ticketInfo}>
-            Total price: <span className="ml-1">{totalPrice} akcse</span>
+            Total price: <span className="ml-1">{totalPrice} AK</span>
           </div>
-          {/* <div className={styles.buttonsContainer}> */}
           <button className={styles.button} onClick={() => handleStart()}>
             Start Lotto
           </button>
@@ -99,7 +89,6 @@ const UserGame = () => {
           <button className={styles.button} onClick={() => handleReset()}>
             Reset
           </button>
-          {/* </div> */}
         </div>
       </div>
       <div className={styles.winnerNumsWrapper}>
@@ -110,7 +99,8 @@ const UserGame = () => {
           {currentWinners.map((num) => (
             <div
               className={`${styles.numWinner} ${
-                currentSelectedNums.includes(num) && "border-green-500"
+                currentTicket.numsPlayed.includes(num) &&
+                "border-green-500 border-2"
               }`}
               key={num}
             >
@@ -131,13 +121,7 @@ const UserGame = () => {
       {ticketHistory.length !== 0 && (
         <div className="w-full mt-4">
           <div className={styles.yourTickets}>
-            <h1 className="text-xl mb-2">Your tickets</h1>
-            <button
-              className="border rounded px-2"
-              onClick={() => handleClearTicketHistory()}
-            >
-              clear
-            </button>
+            <h1 className="text-2xl tracking-widest pl-2 mb-4">Your tickets</h1>
           </div>
           <div className={styles.ticketRow}>
             <div className="w-[10%]"></div>
