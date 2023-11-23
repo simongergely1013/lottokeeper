@@ -1,5 +1,5 @@
 import React from "react";
-import TicketNumber from "./TicketNumber";
+import TicketNumber from "../components/TicketNumber";
 import { useSelector, useDispatch } from "react-redux";
 import {
   startLotto,
@@ -10,28 +10,30 @@ import {
 
 const styles = {
   main: "w-full h-full flex flex-col items-center px-16 py-10 overflow-y-auto",
-  title: "text-2xl text-slate-100 font-bold tracking-wider",
-  ticketContainer:
-    "w-[66%] flex flex-col justify-center items-center py-6 border",
-  numsContainer: "border-y w-2/5 h-[200px] mt-5 pl-3 py-3 flex flex-wrap",
+  title:
+    "w-7/12 text-2xl bg-slate-900 text-slate-100 text-center p-3 tracking-widest rounded",
+  ticketContainer: "w-[66%] flex flex-col justify-center items-center py-6",
+  numsContainer:
+    "border border-4 border-dotted border-slate-300 w-7/12 h-[280px] mt-5 pl-3 py-3 flex items-center flex-wrap bg-slate-900",
   numTicket:
-    "w-6 h-6 rounded-full bg-slate-100 text-center m-1 cursor-pointer hover:bg-sky-500 hover:text-slate-100",
-  ticketSideBar:
-    "w-[34%] flex flex-col items-center justify-around py-6 border",
-  ticketInfo: "w-1/2 text-slate-100 text-center border-b py-1",
+    "w-6 h-6 border border-slate-900 rounded-full bg-slate-100 text-center m-1 cursor-pointer hover:bg-sky-500 hover:text-slate-100",
+  ticketSideBar: "w-[34%] flex flex-col items-center justify-center gap-3",
+  ticketInfo:
+    "w-9/12 text-slate-100 bg-slate-900 tracking-widest text-center border rounded border-slate-900 px-3 py-2",
   buttonsContainer:
     "w-1/2 flex flex-col justify-center items-center gap-3 mt-5",
-  button: "w-full border rounded text-slate-100 px-3 py-2",
+  button:
+    "w-9/12 rounded bg-blue-600 text-slate-100 font-bold tracking-widest px-3 py-2 drop-shadow-xl",
   winnerNumsWrapper:
     "w-1/3 flex flex-col justify-center gap-5 items-center mt-10",
   winnerNumsText: "h-10 text-slate-100 text-xl",
   winnerNumsContainer:
-    "w-full h-10 flex justify-center items-center gap-2 text-slate-100 text-xl p-3 mb-4",
+    "w-full h-10 flex justify-center items-center gap-2 text-slate-900 text-xl p-3 mb-4",
   numWinner: "w-10 h-10 flex justify-center items-center border rounded-full",
   yourTickets: "flex justify-between items-center text-slate-100 gap-3",
   ticketHistory: "w-full flex flex-col",
   ticketRow:
-    "w-full flex items-center justify-between p-2 border-b text-slate-100",
+    "w-full flex items-center justify-between p-2 border-b text-slate-900",
   ticketRowNum:
     "w-6 h-6 flex justify-center items-center border rounded-full px-2 mr-2 text-xs",
 };
@@ -87,17 +89,17 @@ const UserGame = () => {
           <div className={styles.ticketInfo}>
             Total price: <span className="ml-1">{totalPrice} akcse</span>
           </div>
-          <div className={styles.buttonsContainer}>
-            <button className={styles.button} onClick={() => handleStart()}>
-              Start Lotto
-            </button>
-            <button className={styles.button} onClick={() => handleNewTicket()}>
-              New ticket
-            </button>
-            <button className={styles.button} onClick={() => handleReset()}>
-              Reset
-            </button>
-          </div>
+          {/* <div className={styles.buttonsContainer}> */}
+          <button className={styles.button} onClick={() => handleStart()}>
+            Start Lotto
+          </button>
+          <button className={styles.button} onClick={() => handleNewTicket()}>
+            New ticket
+          </button>
+          <button className={styles.button} onClick={() => handleReset()}>
+            Reset
+          </button>
+          {/* </div> */}
         </div>
       </div>
       <div className={styles.winnerNumsWrapper}>

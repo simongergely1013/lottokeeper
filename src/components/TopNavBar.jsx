@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const styles = {
-  main: "w-full h-24 flex justify-center items-center bg-slate-900",
+  main: "w-full h-24 flex justify-center items-center bg-slate-950",
 };
 
 const TopNavBar = () => {

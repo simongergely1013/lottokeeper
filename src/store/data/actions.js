@@ -1,6 +1,10 @@
 import { ACTIONS } from ".";
 import getRandomIntInclusive from "../../utilities/getRandomIntInclusive";
 
+export const createUserName = (userName) => async (dispatch) => {
+    dispatch({type: ACTIONS.USER.SET_USERNAME, payload: userName})
+}
+
 export const placeNumberUser = (num) => async (dispatch, getState) => {
     const state = getState();
     const {currentSelectedNums} = state.data.user;
@@ -11,11 +15,6 @@ export const placeNumberUser = (num) => async (dispatch, getState) => {
         dispatch({type: ACTIONS.USER.PLACE_NUMBER, payload: currentSelectedNums})
     }
 }
-
-// export const completeTicketUser = (dispatch) => {
-//     dispatch({type: ACTIONS.USER.COMPLETE_TICKET})
-// }
-
 export const startLotto = (dispatch) => {
     let winnerNums = [];
     for(let i = 0; i < 5; i++){
