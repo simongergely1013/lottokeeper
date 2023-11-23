@@ -4,7 +4,7 @@ import { placeNumberUser } from "../store/data/actions";
 
 const styles = {
   number:
-    "w-6 h-6 rounded-full bg-slate-100 text-center m-1 cursor-pointer transition-all duration-100 hover:bg-green-500 hover:text-slate-100",
+    "w-8 h-8 flex justify-center items-center border rounded-full bg-slate-100 text-center font-bold m-1 cursor-pointer transition-all duration-100 hover:bg-green-500 hover:text-slate-100 drop-shadow-xl",
 };
 
 const TicketNumber = ({ number }) => {

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { DropdownTriangle, BalanceSvg, PlaySvg, StatsSvg } from "./Svgs";
 
 const styles = {
-  main: "h-screen w-1/5 flex flex-col items-center bg-slate-900 text-slate-100 px-4 py-6",
+  main: "h-screen w-1/5 flex flex-col items-center bg-slate-950 text-slate-100 px-4 py-6",
   conatiner: "w-full flex items-center justify-center font-bold",
   stats: "text-xl mr-20",
   title: "text-3xl tracking-widest",
@@ -27,7 +27,7 @@ const NavBar = () => {
       <div className={styles.conatiner}>
         <h1 className={styles.title}>Lottokeeper</h1>
       </div>
-      <div className="w-full mt-10  pl-6">
+      <div className="w-full mt-24 pl-6">
         <div className="flex items-center gap-1 mb-4">
           <h2>{name}</h2>
           <div onClick={() => setUserToggle(!userToggle)}>
@@ -48,13 +48,13 @@ const NavBar = () => {
           <div className="flex flex-col gap-4">
             <div className="flex items-center">
               <PlaySvg />
-              <Link to={"/userGame"} className={styles.dropdownText}>
+              <Link to="/user/game" className={styles.dropdownText}>
                 Play game
               </Link>
             </div>
             <div className="flex items-center">
               <StatsSvg />
-              <Link to={"userStats"} className={styles.dropdownText}>
+              <Link to="/user/stats" className={styles.dropdownText}>
                 Statistics
               </Link>
             </div>
@@ -82,13 +82,13 @@ const NavBar = () => {
           <div className="flex flex-col gap-4">
             <div className="flex items-center">
               <PlaySvg />
-              <Link to={"/ownerGame"} className={styles.dropdownText}>
+              <Link to="/owner/game" className={styles.dropdownText}>
                 Play game
               </Link>
             </div>
             <div className="flex items-center">
               <StatsSvg />
-              <Link to={"/ownerStats"} className={styles.dropdownText}>
+              <Link to="/owner/stats" className={styles.dropdownText}>
                 Statistics
               </Link>
             </div>

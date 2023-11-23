@@ -6,6 +6,7 @@ import getAmountWon from '../../utilities/getAmountWon';
 
 export const ACTIONS = {
     USER:{
+        SET_USERNAME: 'SET_USERNAME',
         PLACE_NUMBER:'PLACE_NUMBER',
         COMPLETE_TICKET: 'COMPLETE_TICKET',
         START_LOTTO: 'START_LOTTO',
@@ -21,7 +22,7 @@ export const ACTIONS = {
 
 const initialState = {
     user:{
-        name: "USER",
+        name: "",
         userBalance: 10000,
         ticketHistory: [],
         currentSelectedNums: [],
@@ -45,6 +46,14 @@ const initialState = {
 
 const dataReducer = (state = initialState, action) => {
     switch(action.type){
+        case ACTIONS.USER.SET_USERNAME:
+            return{
+                ...state,
+                user:{
+                    ...state.user,
+                    name: action.payload
+                }
+            }
         case ACTIONS.USER.PLACE_NUMBER:
             return{
                 ...state,
@@ -71,7 +80,7 @@ const dataReducer = (state = initialState, action) => {
                 user:{
                     ...state.user,
                     userBalance: updateUserBalance(state.user.userBalance, state.user.currentSelectedNums, action.payload), 
-                    ticketHistory: [...state.user.ticketHistory,{numsPlayed: state.user.currentSelectedNums, id: uuidv4(), date: date.toString().slice(0,24), winnerNums: getWinnerNums(state.user.currentSelectedNums, action.payload), amountWon: getAmountWon(getWinnerNums(state.user.currentSelectedNums, action.payload))}],
+                    ticketHistory: [...state.user.ticketHistory,{numsPlayed: state.user.currentSelectedNums, id: uuidv4(), date: date.toString().slice(0,24),winnerNums: action.payload,userWinnerNums: getWinnerNums(state.user.currentSelectedNums, action.payload), amountWon: getAmountWon(getWinnerNums(state.user.currentSelectedNums, action.payload))}],
                     currentWinners: action.payload,
                     numsWon: getWinnerNums(state.user.currentSelectedNums, action.payload)
                 },
