@@ -21,9 +21,9 @@ const styles = {
 };
 
 const UserStats = () => {
-  const { ticketHistory, name } = useSelector((state) => state.data.user);
+  const { userTicketHistory, userName } = useSelector((state) => state.data);
   const dispatch = useDispatch();
-  const totalPaidOut = ticketHistory.reduce(
+  const totalPaidOut = userTicketHistory.reduce(
     (accumulator, currentValue) => accumulator + currentValue.amountWon,
     0
   );
@@ -42,8 +42,8 @@ const UserStats = () => {
 
   return (
     <div className="w-full h-full px-16 py-10">
-      <h1 className={styles.title}>{name}'s Statistics</h1>
-      {ticketHistory.length !== 0 && (
+      <h1 className={styles.title}>{userName}'s Statistics</h1>
+      {userTicketHistory.length !== 0 && (
         <div className="w-full mt-10">
           <div className={styles.ticketHistoryTitleDiv}>
             <h1 className="text-xl tracking-widest pl-2 mb-2">
@@ -79,7 +79,7 @@ const UserStats = () => {
             <div className="w-[30%]">Ticket ID</div>
           </div>
           <div className={styles.ticketHistory}>
-            {ticketHistory.map((ticket, index) => (
+            {userTicketHistory.map((ticket, index) => (
               <div key={ticket.id} className={styles.ticketRow}>
                 <div className="w-[5%]">
                   #<span className="px-2">{index + 1}</span>
@@ -90,7 +90,7 @@ const UserStats = () => {
                   ))}
                 </div>
                 <div className="w-[5%] pl-1">
-                  {ticket.userWinnerNums.length}
+                  {ticket.ticketWinnerNums.length}
                 </div>
                 <div className="w-[15%] pl-0.5">
                   {ticket.amountWon}

@@ -8,20 +8,18 @@ import data from './data';
 const dataPersistConfig = {
     key: 'data',
     storage,
-    // whitelist: ['user']
   }
 
 const rootReducer = combineReducers({
     data: persistReducer(dataPersistConfig, data),
 });
 
-const persistConfig = {
-    key: 'root',
-    storage,
-    // blacklist: ['user', 'owner']
-  }
+// const persistConfig = {
+//     key: 'root',
+//     storage,
+//   }
 
-  const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(dataPersistConfig, rootReducer)
 
 export const store = createStore(persistedReducer, applyMiddleware(thunk));
 export const persistor = persistStore(store)

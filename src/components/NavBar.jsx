@@ -16,9 +16,9 @@ const styles = {
 };
 
 const NavBar = () => {
-  const { name } = useSelector((state) => state.data.user);
-  const { userBalance } = useSelector((state) => state.data.user);
-  const { ownerBalance } = useSelector((state) => state.data.owner);
+  const { userName, userBalance, ownerBalance } = useSelector(
+    (state) => state.data
+  );
   const [userToggle, setUserToggle] = useState(true);
   const [ownerToggle, setOwnerToggle] = useState(true);
 
@@ -29,7 +29,7 @@ const NavBar = () => {
       </div>
       <div className="w-full mt-24 pl-6">
         <div className="flex items-center gap-1 mb-4">
-          <h2>{name}</h2>
+          <h2>{userName}</h2>
           <div onClick={() => setUserToggle(!userToggle)}>
             <DropdownTriangle
               className={`${styles.triangleToggle} ${
