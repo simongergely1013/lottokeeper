@@ -5,6 +5,7 @@ import NavBar from './components/NavBar';
 import TopNavBar from './components/TopNavBar';
 import UserGame from './pages/UserGame';
 import UserStats from './pages/UserStats';
+import OwnerGame from './pages/OwnerGame';
 import OwnerStats from './pages/OwnerStats';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from 'react-redux';
@@ -15,13 +16,13 @@ const styles = {
 }
 
 const App = () => {
-  const {name} = useSelector(state => state.data.user);
+  const {userName} = useSelector(state => state.data);
 
-  useEffect(() => {}, [name])
+  // useEffect(() => {}, [name])
   return (
     <Router>
     <div className={styles.wrapper}>
-      {name === "" ? <CreateUserNameModal/> :
+      {userName === "" ? <CreateUserNameModal/> :
       <>
      <NavBar/>
      <div className={styles.main}>
@@ -30,6 +31,7 @@ const App = () => {
         <Route path='/' element={<Main/>}/> 
         <Route path='/user/game' element={<UserGame/>}/>
         <Route path='/user/stats' element={<UserStats/>}/>
+        <Route path='/owner/game' element={<OwnerGame/>}/>
         <Route path='/owner/stats' element={<OwnerStats/>}/>
       </Routes>
      </div>

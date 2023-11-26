@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createUserName } from "../store/data/actions";
 import { useState } from "react";
 
@@ -20,7 +20,6 @@ const CreateUserName = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    // e.preventDefault();
     dispatch(createUserName(userName));
     setUsername("");
   };
@@ -50,8 +49,6 @@ const CreateUserName = () => {
 };
 
 const CreateUserNameModal = () => {
-  // const { name } = useSelector((state) => state.data.user);
-
   return (
     <div className={styles.main}>
       <CreateUserName />

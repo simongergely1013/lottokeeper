@@ -7,13 +7,16 @@ const styles = {
     "w-8 h-8 flex justify-center items-center border rounded-full bg-slate-100 text-center font-bold m-1 cursor-pointer transition-all duration-100 hover:bg-green-500 hover:text-slate-100 drop-shadow-xl",
 };
 
-const TicketNumber = ({ number }) => {
+const TicketNumberUser = ({ number }) => {
   const [isActive, setIsActive] = useState(false);
-  const { currentSelectedNums } = useSelector((state) => state.data.user);
+  const { userCurrentSelectedNums } = useSelector((state) => state.data);
   const dispatch = useDispatch();
 
   const handleNumClick = (num) => {
-    if (currentSelectedNums.length >= 5 || currentSelectedNums.includes(num)) {
+    if (
+      userCurrentSelectedNums.length >= 5 ||
+      userCurrentSelectedNums.includes(num)
+    ) {
       return;
     } else {
       setIsActive(!isActive);
@@ -22,10 +25,10 @@ const TicketNumber = ({ number }) => {
   };
 
   useEffect(() => {
-    if (currentSelectedNums.length === 0) {
+    if (userCurrentSelectedNums.length === 0) {
       setIsActive(false);
     }
-  }, [currentSelectedNums]);
+  }, [userCurrentSelectedNums]);
 
   return (
     <div
@@ -40,4 +43,4 @@ const TicketNumber = ({ number }) => {
   );
 };
 
-export default TicketNumber;
+export default TicketNumberUser;
