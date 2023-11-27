@@ -4,7 +4,7 @@ import { placeNumberUser } from "../store/data/actions";
 
 const styles = {
   number:
-    "w-8 h-8 flex justify-center items-center border rounded-full bg-slate-100 text-center font-bold m-1 cursor-pointer transition-all duration-100 hover:bg-green-500 hover:text-slate-100 drop-shadow-xl",
+    "w-8 h-8 flex justify-center items-center rounded-full text-center font-bold m-1 cursor-pointer hover:bg-green-700 hover:text-slate-100 drop-shadow-xl",
 };
 
 const TicketNumberUser = ({ number }) => {
@@ -34,7 +34,7 @@ const TicketNumberUser = ({ number }) => {
     <div
       key={number}
       className={`${styles.number} ${
-        isActive && "bg-green-600 text-slate-100"
+        isActive ? "bg-green-700 text-slate-100" : "bg-slate-100 text-slate-900"
       }`}
       onClick={() => handleNumClick(number)}
     >
