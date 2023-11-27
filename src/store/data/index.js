@@ -1,15 +1,11 @@
-import {v4 as uuidv4} from 'uuid';
-// import updateUserBalance from '../../utilities/updateUserBalance';
-// import updateOwnerBalance from '../../utilities/updateOwnerBalance';
-
 export const ACTIONS = {
     // USER
         SET_USERNAME: 'SET_USERNAME',
         USER_PLACE_NUMBER:'USER_PLACE_NUMBER',
         USER_UPDATE_TOTAL_PRICE: 'USER_UPDATE_TOTAL_PRICE',
         USER_ADD_TICKET: 'USER_ADD_TICKET',
-        USER_START_NEW_ROUND: 'USER_START_NEW_ROUND',
-        USER_START_LOTTO: 'USER_START_LOTTO',
+        USER_NEW_GAME: 'USER_NEW_GAME',
+        USER_PLAY: 'USER_PLAY',
         USER_SET_CURRENT_WINNERS: 'USER_SET_CURRENT_WINNERS',
         USER_CLEAR_CURRENT_SELECTED_NUMS: 'USER_CLEAR_CURRENT_SELECTED_NUMS',
         USER_SORT_TICKET_HISTORY_BY_HITS: 'USER_SORT_TICKET_HISTORY_BY_HITS',
@@ -21,8 +17,8 @@ export const ACTIONS = {
         OWNER_UPDATE_TOTAL_PRICE: 'OWNER_UPDATE_TOTAL_PRICE',
         OWNER_GENERATE_TICKET: 'OWNER_GENERATE_TICKET',
         OWNER_ADD_TICKET: 'OWNER_ADD_TICKET',
-        OWNER_START_NEW_ROUND: 'OWNER_START_NEW_ROUND',
-        OWNER_START_LOTTO: 'OWNER_START_LOTTO',
+        OWNER_NEW_GAME: 'OWNER_NEW_GAME',
+        OWNER_PLAY: 'OWNER_START_LOTTO',
         OWNER_SET_CURRENT_WINNERS: 'OWNER_SET_CURRENT_WINNERS',
         OWNER_CLEAR_CURRENT_SELECTED_NUMS: 'OWNER_CLEAR_CURRENT_SELECTED_NUMS',
         OWNER_SORT_TICKET_HISTORY_BY_HITS: 'OWNER_SORT_TICKET_HISTORY_BY_HITS',
@@ -60,6 +56,9 @@ const initialState = {
 }
 
 const dataReducer = (state = initialState, action) => {
+
+    //USER ACTIONS
+
     switch(action.type){
         case ACTIONS.SET_USERNAME:
             return{
@@ -74,7 +73,7 @@ const dataReducer = (state = initialState, action) => {
         case ACTIONS.USER_UPDATE_TOTAL_PRICE:
             return{
                 ...state,
-                userTotalPrice: state.userTotalPrice + 500
+                userTotalPrice: action.payload
                 }
         case ACTIONS.USER_ADD_TICKET:
             return{
@@ -83,7 +82,7 @@ const dataReducer = (state = initialState, action) => {
                 userBalance: state.userBalance - 500,
                 ownerBalance: state.ownerBalance + 500
                 }            
-        case ACTIONS.USER_START_LOTTO:
+        case ACTIONS.USER_PLAY:
             const totalPaidOutUser1 = action.payload.reduce(
                 (accumulator, currentValue) => accumulator + currentValue.amountWon,
                 0
@@ -104,7 +103,7 @@ const dataReducer = (state = initialState, action) => {
                 ...state,
                 userCurrentSelectedNums: []
             }   
-        case ACTIONS.USER_START_NEW_ROUND:
+        case ACTIONS.USER_NEW_GAME:
             return{
                 ...state,
                 userTicketHistory: [],
@@ -159,7 +158,7 @@ const dataReducer = (state = initialState, action) => {
                 ownerBalance: state.ownerBalance + 500,
                 userBalance: state.userBalance - 500
                 }
-        case ACTIONS.OWNER_START_LOTTO:
+        case ACTIONS.OWNER_PLAY:
                 const totalPaidOutUser2 = action.payload.reduce(
                                     (accumulator, currentValue) => accumulator + currentValue.amountWon,
                                     0
@@ -180,7 +179,7 @@ const dataReducer = (state = initialState, action) => {
                 ...state,
                 ownerCurrentSelectedNums: []
                 }   
-        case ACTIONS.OWNER_START_NEW_ROUND:
+        case ACTIONS.OWNER_NEW_GAME:
             return{
                 ...state,
                 ownerTicketHistory: [],

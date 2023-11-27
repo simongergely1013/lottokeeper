@@ -19,27 +19,23 @@ export const placeNumberUser = (num) => async (dispatch, getState) => {
         userCurrentSelectedNums.push(num)
         dispatch({type: ACTIONS.USER_PLACE_NUMBER, payload: userCurrentSelectedNums})
         if(userCurrentSelectedNums.length === 5){
-            dispatch({type: ACTIONS.USER_UPDATE_TOTAL_PRICE})
+            dispatch({type: ACTIONS.USER_UPDATE_TOTAL_PRICE, payload: 500})
         }
     }
 }
 
 export const addTicketUser = (dispatch, getState) => {
     const state = getState();
-    const {userBalance} = state.data;
-    if(userBalance >= 500){
         const {userTicketHistory, userCurrentSelectedNums} = state.data;
         const date = new Date();
         const ticketHistoryUpdate = [...userTicketHistory,  {numsPlayed: userCurrentSelectedNums, id: uuidv4(), date: date.toString().slice(0,24), isGenerated: false}]
 
         dispatch({type: ACTIONS.USER_ADD_TICKET, payload: ticketHistoryUpdate})
         dispatch({type: ACTIONS.USER_CLEAR_CURRENT_SELECTED_NUMS})
-    } else {
-        return;
-    }
+        dispatch({type: ACTIONS.USER_UPDATE_TOTAL_PRICE, payload: 0})
 }
 
-export const startLottoUser = (dispatch, getState) => {
+export const playUser = (dispatch, getState) => {
     const state = getState();
     const {userTicketHistory} = state.data;
         let winnerNums = [];
@@ -53,11 +49,11 @@ export const startLottoUser = (dispatch, getState) => {
 
         const ticketHistoryUpdate = userTicketHistory.map(ticket => ({...ticket, ticketWinnerNums: getWinnerNums(ticket.numsPlayed, winnerNums),amountWon: getAmountWon(getWinnerNums(ticket.numsPlayed, winnerNums)) }))
         dispatch({type: ACTIONS.USER_SET_CURRENT_WINNERS, payload: winnerNums})
-        dispatch({type: ACTIONS.USER_START_LOTTO, payload: ticketHistoryUpdate})
+        dispatch({type: ACTIONS.USER_PLAY, payload: ticketHistoryUpdate})
 }
 
-export const startNewRoundUser = (dispatch) => {
-    dispatch({type: ACTIONS.USER_START_NEW_ROUND})
+export const newGameUser = (dispatch) => {
+    dispatch({type: ACTIONS.USER_NEW_GAME})
 }
 
 export const sortTicketHistoryByHitsUser = (dispatch, getState) => {
@@ -70,7 +66,7 @@ export const sortTicketHistoryByHitsUser = (dispatch, getState) => {
     } else if(!hitsDescending) {
         ticketHistorySortedByHits = userTicketHistory.sort((a,b) => a.ticketWinnerNums.length - b.ticketWinnerNums.length);
     }
-    dispatch({type: ACTIONS.USER.SORT_TICKET_HISTORY_BY_HITS, payload: ticketHistorySortedByHits})
+    dispatch({type: ACTIONS.USER_SORT_TICKET_HISTORY_BY_HITS, payload: ticketHistorySortedByHits})
 }
 
 export const sortTicketHistoryByPayoutUser = (dispatch, getState) => {
@@ -115,34 +111,30 @@ export const placeNumberOwner = (num) => async (dispatch, getState) => {
 
 export const addTicketOwner = (dispatch, getState) => {
     const state = getState();
-    const {userBalance} = state.data;
-    if(userBalance >= 500){
         const {ownerCurrentSelectedNums, ownerTicketHistory} = state.data;
         const date = new Date();
         const ticketHistoryUpdate = [...ownerTicketHistory, {numsPlayed: ownerCurrentSelectedNums, id: uuidv4(), date: date.toString().slice(0,24), isGenerated: false}]
       
         dispatch({type: ACTIONS.OWNER_ADD_TICKET, payload: ticketHistoryUpdate})
         dispatch({type: ACTIONS.OWNER_CLEAR_CURRENT_SELECTED_NUMS})
-    } else {
-        return;
-    }
+        dispatch({type: ACTIONS.OWNER_UPDATE_TOTAL_PRICE, payload: 0})
 }
 
 export const generateTickets = (randomTickets) => async (dispatch, getState) => {
-    for(let i = 0; i < randomTickets; i++){
-        let numsGenerated = [];
-        for(let j = 0; j < 5; j++){
-            numsGenerated.push(getRandomIntInclusive(1,39));
+    const state = getState();
+    const {ownerTicketHistory} = state.data;
+        for(let i = 0; i < randomTickets; i++){
+            let numsGenerated = [];
+            for(let j = 0; j < 5; j++){
+                numsGenerated.push(getRandomIntInclusive(1,39));
+            }
+            const date = new Date();
+            const ticketHistoryUpdate = [...ownerTicketHistory, {numsPlayed: numsGenerated, id: uuidv4(), date: date.toString().slice(0,24), isGenerated: true}]
+            dispatch({type: ACTIONS.OWNER_GENERATE_TICKET, payload: ticketHistoryUpdate})
         }
-        const state = getState();
-        const {ownerTicketHistory} = state.data;
-        const date = new Date();
-        const ticketHistoryUpdate = [...ownerTicketHistory, {numsPlayed: numsGenerated, id: uuidv4(), date: date.toString().slice(0,24), isGenerated: true}]
-        dispatch({type: ACTIONS.OWNER_GENERATE_TICKET, payload: ticketHistoryUpdate})
-    }  
-}
+    }
 
-export const startLottoOwner = (dispatch, getState) => {
+export const playOwner = (dispatch, getState) => {
     const state = getState();
     const {ownerTicketHistory} = state.data;
         let winnerNums = [];
@@ -156,11 +148,11 @@ export const startLottoOwner = (dispatch, getState) => {
 
         const ticketHistoryUpdate = ownerTicketHistory.map(ticket => ({...ticket, ticketWinnerNums: getWinnerNums(ticket.numsPlayed, winnerNums),amountWon: getAmountWon(getWinnerNums(ticket.numsPlayed, winnerNums)), revenueOnTicket: 500 - getAmountWon(getWinnerNums(ticket.numsPlayed, winnerNums))}))
         dispatch({type: ACTIONS.OWNER_SET_CURRENT_WINNERS, payload: winnerNums})
-        dispatch({type: ACTIONS.OWNER_START_LOTTO, payload: ticketHistoryUpdate})
+        dispatch({type: ACTIONS.OWNER_PLAY, payload: ticketHistoryUpdate})
 }
 
-export const startNewRoundOwner = (dispatch) => {
-    dispatch({type: ACTIONS.OWNER_START_NEW_ROUND})
+export const newGameOwner = (dispatch) => {
+        dispatch({type: ACTIONS.OWNER_NEW_GAME})
 }
 
 export const sortTicketHistoryByHitsOwner = (dispatch, getState) => {

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import TicketNumber from "../components/TicketNumberOwner";
-import formatBalance from "../utilities/formatBalance";
+import formatNumber from "../utilities/formatNumber";
 import { useSelector, useDispatch } from "react-redux";
 import { FaSort } from "react-icons/fa";
 import {
   addTicketOwner,
   generateTickets,
-  startLottoOwner,
-  startNewRoundOwner,
+  playOwner,
+  newGameOwner,
   resetAll,
   sortTicketHistoryByHitsOwner,
   sortTicketHistoryByPayoutOwner,
@@ -27,23 +27,23 @@ const styles = {
   gameInfo:
     "w-2/3 flex justify-center items-center text-slate-100 bg-slate-900 tracking-widest text-center rounded px-3 py-2",
   ticketButton:
-    "w-7/12 rounded bg-blue-600 text-slate-100 tracking-widest m-2 px-3 py-2 drop-shadow-xl",
+    "w-7/12 rounded bg-blue-600 text-slate-100 tracking-widest m-2 px-3 py-2 drop-shadow-xl hover:scale-110",
   button:
-    "w-2/3 rounded bg-blue-600 text-slate-100 tracking-widest px-3 py-2 drop-shadow-xl",
+    "w-2/3 rounded bg-blue-600 text-slate-100 tracking-widest px-3 py-2 drop-shadow-xl hover:scale-110",
   generateButton:
     "w-2/3 rounded bg-indigo-800 text-slate-100 tracking-widest px-3 py-2 drop-shadow-xl",
   ticketHistory: "w-full flex flex-col",
   ticketRow:
     "w-full flex items-center justify-between p-4 rounded bg-slate-900 text-slate-200 tracking-widest mb-1",
   ticketRowNum:
-    "w-6 h-6 flex justify-center items-center border rounded-full px-2 mr-2 text-xs",
+    "w-7 h-7 flex justify-center items-center rounded-full px-2 mr-2 text-xs font-bold",
   winnerNumsWrapper:
-    "w-1/3 flex flex-col justify-center gap-5 items-center mt-10",
+    "w-5/12 flex flex-col justify-center gap-5 items-center py-6 px-4 mt-10 rounded",
   winnerNumsText: "h-10 text-slate-100 text-xl tracking-widest",
   winnerNumsContainer:
     "w-full h-10 flex justify-center items-center gap-4 text-slate-900 text-xl p-3 mb-4",
   numWinner:
-    "w-10 h-10 flex justify-center items-center border border-2 rounded-full text-slate-100",
+    "w-12 h-12 flex justify-center items-center bg-green-700 border-2 border-green-700 rounded-full text-slate-100 font-bold",
 };
 
 let nums = [];
@@ -55,14 +55,18 @@ const OwnerGame = () => {
   const {
     ownerTicketHistory,
     ownerTotalPrice,
-    ownerCurrentSelectedNums,
     ownerCurrentWinners,
+    ownerCurrentSelectedNums,
     ownerName,
     userName,
+    userBalance,
   } = useSelector((state) => state.data);
+
+  const dispatch = useDispatch();
 
   const [randomTickets, setRandomTickets] = useState(0);
   const [randomTicketsPrice, setRandomTicketsPrice] = useState(0);
+  const totalPrice = ownerTotalPrice + randomTicketsPrice;
 
   const totalPaidOut = ownerTicketHistory.reduce(
     (accumulator, currentValue) => accumulator + currentValue.amountWon,
@@ -74,7 +78,8 @@ const OwnerGame = () => {
     0
   );
 
-  const dispatch = useDispatch();
+  const alertCondition = totalPrice > userBalance;
+  const alertMessage = `${ownerName} doesn't have enough balance.`;
 
   const handleNumberChange = (value) => {
     setRandomTickets(value);
@@ -82,19 +87,40 @@ const OwnerGame = () => {
   };
 
   const handleAddTicket = () => {
-    dispatch(addTicketOwner);
+    switch (true) {
+      case alertCondition:
+        alert(alertMessage);
+      case ownerCurrentSelectedNums.length < 5:
+        return;
+      default:
+        dispatch(addTicketOwner);
+    }
   };
 
   const handleGenerateTickets = () => {
-    dispatch(generateTickets(randomTickets));
+    if (alertCondition) {
+      alert(alertMessage);
+    } else {
+      dispatch(generateTickets(randomTickets));
+    }
   };
 
-  const handleStartLotto = () => {
-    dispatch(startLottoOwner);
+  const handlePlay = () => {
+    switch (true) {
+      case alertCondition:
+        alert(alertMessage);
+      case ownerCurrentSelectedNums.length < 5:
+        return;
+      default:
+        dispatch(playOwner);
+    }
   };
 
-  const handleStartNewRound = () => {
-    dispatch(startNewRoundOwner);
+  const handleNewGame = () => {
+    if (alertCondition) {
+      alert(alertMessage);
+    }
+    dispatch(newGameOwner);
   };
 
   const handleReset = () => {
@@ -129,15 +155,13 @@ const OwnerGame = () => {
             className={styles.ticketButton}
             onClick={() => handleAddTicket()}
           >
-            Add ticket
+            Add ticket to list
           </button>
         </div>
         <div className={styles.ticketSideBar}>
           <div className={styles.gameInfo}>
             Total price:
-            <span className="pl-2">
-              {formatBalance(ownerTotalPrice + randomTicketsPrice)} AK
-            </span>
+            <span className="pl-2">{formatNumber(totalPrice)} AK</span>
           </div>
           <div className={styles.randomTickets}>
             <div className="flex items-center gap-4">
@@ -152,27 +176,30 @@ const OwnerGame = () => {
               />
             </div>
           </div>
-          <button
-            className={styles.generateButton}
-            onClick={() => handleGenerateTickets()}
-          >
-            Generate Random Tickets
+          {randomTickets > 0 && (
+            <button
+              className={styles.generateButton}
+              onClick={() => handleGenerateTickets()}
+            >
+              Generate Random Tickets
+            </button>
+          )}
+          <button className={styles.button} onClick={() => handlePlay()}>
+            Play
           </button>
-          <button className={styles.button} onClick={() => handleStartLotto()}>
-            Start Lotto
-          </button>
-          <button
-            className={styles.button}
-            onClick={() => handleStartNewRound()}
-          >
-            Start New Round
+          <button className={styles.button} onClick={() => handleNewGame()}>
+            New Game
           </button>
           <button className={styles.button} onClick={() => handleReset()}>
             Reset to Default
           </button>
         </div>
       </div>
-      <div className={styles.winnerNumsWrapper}>
+      <div
+        className={`${styles.winnerNumsWrapper} ${
+          ownerCurrentWinners.length !== 0 && "bg-slate-900"
+        }`}
+      >
         <h1 className={styles.winnerNumsText}>
           {ownerCurrentWinners.length !== 0 ? "The winner numbers are:" : ""}
         </h1>
@@ -208,7 +235,11 @@ const OwnerGame = () => {
                 </div>
                 <div className="w-[25%] flex">
                   {ticket.numsPlayed.map((num) => (
-                    <div className={styles.ticketRowNum}>{num}</div>
+                    <div
+                      className={`${styles.ticketRowNum} bg-slate-200 text-slate-900`}
+                    >
+                      {num}
+                    </div>
                   ))}
                 </div>
                 <div className="w-[10%]">
@@ -263,7 +294,15 @@ const OwnerGame = () => {
                   </div>
                   <div className="w-[15%] flex">
                     {ticket.numsPlayed.map((num) => (
-                      <div className={styles.ticketRowNum}>{num}</div>
+                      <div
+                        className={`${styles.ticketRowNum} ${
+                          ownerCurrentWinners.includes(num)
+                            ? "bg-green-700 text-slate-100"
+                            : "bg-slate-200 text-slate-900"
+                        }`}
+                      >
+                        {num}
+                      </div>
                     ))}
                   </div>
                   <div className="w-[8%] pl-5">
@@ -276,8 +315,12 @@ const OwnerGame = () => {
                   <div className="w-[25%] pl-0.5">{ticket.date}</div>
                   <div className="w-[30%] pl-0.5">{ticket.id}</div>
                 </div>
-                <div className="flex items-center bg-slate-800 text-slate-200 tracking-widest p-4 mb-1 rounded">
-                  Revenue on ticket: {ticket.revenueOnTicket} AK
+                <div className="flex items-center bg-slate-800 text-slate-200 tracking-widest gap-14 p-4 mb-4 rounded">
+                  <p>Revenue on ticket: {ticket.revenueOnTicket} AK</p>
+                  <p className="flex gap-4">
+                    Played by:
+                    <span>{ticket.isGenerated ? "Generated" : ownerName}</span>
+                  </p>
                 </div>
               </>
             ))}
@@ -285,19 +328,26 @@ const OwnerGame = () => {
           <div className="flex flex-col justify-center gap-4 bg-slate-900 text-slate-100 tracking-widest p-5 mt-2 rounded mb-1">
             <h2 className="">
               Total amount paid out to {userName}:{" "}
-              <span className="pl-1">{formatBalance(totalPaidOut)} AK</span>
+              <span className="pl-1">{formatNumber(totalPaidOut)} AK</span>
             </h2>
-            <h2 className="border-b pb-3">
-              Total revenue on tickets:{" "}
+            <h2 className="border-b border-slate-500 pb-3">
+              {ownerName}'s Total Revenue:{" "}
               <span className="pl-1">
-                {formatBalance(totalRevenueOnTickets)} AK
+                {formatNumber(totalRevenueOnTickets)} AK
               </span>
             </h2>
             <h2 className="">
               {ownerName}'s Total profit:{" "}
-              <span className="pl-1">
-                {formatBalance(totalRevenueOnTickets - totalPaidOut)} AK
+              <span
+                className={`pl-3 mr-2 ${
+                  totalRevenueOnTickets - totalPaidOut < 0
+                    ? "text-red-600"
+                    : "text-green-600"
+                }`}
+              >
+                {formatNumber(totalRevenueOnTickets - totalPaidOut)}
               </span>
+              <span>AK</span>
             </h2>
           </div>
         </div>
