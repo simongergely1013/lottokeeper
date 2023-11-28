@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import CreateUserNameModal from './pages/CreateUserNameModal';
 import Main from './pages/Main';
 import NavBar from './components/NavBar';
@@ -18,7 +18,6 @@ const styles = {
 const App = () => {
   const {userName} = useSelector(state => state.data);
 
-  // useEffect(() => {}, [name])
   return (
     <Router>
     <div className={styles.wrapper}>

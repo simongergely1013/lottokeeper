@@ -121,15 +121,15 @@ export const addTicketOwner = (dispatch, getState) => {
 }
 
 export const generateTickets = (randomTickets) => async (dispatch, getState) => {
-    const state = getState();
-    const {ownerTicketHistory} = state.data;
         for(let i = 0; i < randomTickets; i++){
             let numsGenerated = [];
             for(let j = 0; j < 5; j++){
                 numsGenerated.push(getRandomIntInclusive(1,39));
             }
             const date = new Date();
-            const ticketHistoryUpdate = [...ownerTicketHistory, {numsPlayed: numsGenerated, id: uuidv4(), date: date.toString().slice(0,24), isGenerated: true}]
+            const state = getState();
+            let {ownerTicketHistory} = state.data;
+            let ticketHistoryUpdate = [...ownerTicketHistory, {numsPlayed: numsGenerated, id: uuidv4(), date: date.toString().slice(0,24), isGenerated: true}]
             dispatch({type: ACTIONS.OWNER_GENERATE_TICKET, payload: ticketHistoryUpdate})
         }
     }
@@ -146,7 +146,7 @@ export const playOwner = (dispatch, getState) => {
             winnerNums.push(num)
         }
 
-        const ticketHistoryUpdate = ownerTicketHistory.map(ticket => ({...ticket, ticketWinnerNums: getWinnerNums(ticket.numsPlayed, winnerNums),amountWon: getAmountWon(getWinnerNums(ticket.numsPlayed, winnerNums)), revenueOnTicket: 500 - getAmountWon(getWinnerNums(ticket.numsPlayed, winnerNums))}))
+        const ticketHistoryUpdate = ownerTicketHistory.map(ticket => ({...ticket, ticketWinnerNums: getWinnerNums(ticket.numsPlayed, winnerNums),amountWon: getAmountWon(getWinnerNums(ticket.numsPlayed, winnerNums)), revenueOnTicket: 500}))
         dispatch({type: ACTIONS.OWNER_SET_CURRENT_WINNERS, payload: winnerNums})
         dispatch({type: ACTIONS.OWNER_PLAY, payload: ticketHistoryUpdate})
 }

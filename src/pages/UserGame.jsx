@@ -2,6 +2,8 @@ import React from "react";
 import TicketNumber from "../components/TicketNumberUser";
 import formatNumber from "../utilities/formatNumber";
 import { FaSort } from "react-icons/fa";
+import { TiShoppingCart } from "react-icons/ti";
+import { IoIosAddCircle } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
 import {
   addTicketUser,
@@ -24,13 +26,15 @@ const styles = {
     "w-6 h-6 border border-slate-900 rounded-full bg-slate-100 text-center m-1 cursor-pointer hover:bg-sky-500 hover:text-slate-100",
   ticketSideBar: "w-[35%] h-full flex flex-col  justify-center pb-16 gap-3",
   ticketInfo:
-    "w-9/12 text-slate-100 bg-slate-900 tracking-widest text-center rounded px-3 py-2",
+    "w-9/12 flex justify-center items-center text-slate-100 bg-slate-900 tracking-widest text-center rounded px-3 py-2",
   buttonsContainer:
     "w-1/2 flex flex-col justify-center items-center gap-3 mt-5",
   ticketButton:
-    "w-7/12 rounded bg-blue-600 text-slate-100 tracking-widest m-2 px-3 py-2 drop-shadow-xl hover:scale-110",
+    "w-7/12 flex justify-center items-center gap-2 rounded bg-blue-600 text-slate-100 tracking-widest m-2 px-3 py-2 drop-shadow-xl hover:scale-110",
   button:
     "w-9/12 rounded bg-blue-600 text-slate-100 tracking-widest px-3 py-2 drop-shadow-xl hover:scale-110",
+  resetButton:
+    "w-9/12 rounded bg-blue-800 text-slate-100 tracking-widest px-3 py-2 drop-shadow-xl hover:scale-110",
   winnerNumsWrapper:
     "w-5/12 flex flex-col justify-center gap-5 items-center py-6 px-4 mt-4 rounded",
   winnerNumsText: "h-10 text-slate-100 text-xl tracking-widest",
@@ -74,6 +78,7 @@ const UserGame = () => {
     switch (true) {
       case alertCondition:
         alert(alertMessage);
+        break;
       case userCurrentSelectedNums.length < 5:
         return;
       default:
@@ -82,13 +87,10 @@ const UserGame = () => {
   };
 
   const handlePlay = () => {
-    switch (true) {
-      case alertCondition:
-        alert(alertMessage);
-      case userCurrentSelectedNums.length < 5:
-        return;
-      default:
-        dispatch(playUser);
+    if (alertCondition) {
+      alert(alertMessage);
+    } else {
+      dispatch(playUser);
     }
   };
 
@@ -129,11 +131,13 @@ const UserGame = () => {
             className={styles.ticketButton}
             onClick={() => handleAddTicket()}
           >
+            <IoIosAddCircle />
             Add to Ticket List
           </button>
         </div>
         <div className={styles.ticketSideBar}>
           <div className={styles.ticketInfo}>
+            <TiShoppingCart className="mr-3" />
             Total price:{" "}
             <span className="ml-1">{formatNumber(userTotalPrice)} AK</span>
           </div>
@@ -143,7 +147,7 @@ const UserGame = () => {
           <button className={styles.button} onClick={() => handleNewGame()}>
             New Game
           </button>
-          <button className={styles.button} onClick={() => handleReset()}>
+          <button className={styles.resetButton} onClick={() => handleReset()}>
             Reset to Default
           </button>
         </div>
@@ -236,33 +240,38 @@ const UserGame = () => {
           </div>
           <div className={styles.ticketHistory}>
             {userTicketHistory.map((ticket, index) => (
-              <div key={ticket.id} className={styles.ticketRow}>
-                <div className="w-[4%]">
-                  #<span className="px-2">{index + 1}</span>
+              <>
+                <div key={ticket.id} className={styles.ticketRow}>
+                  <div className="w-[4%]">
+                    #<span className="px-2">{index + 1}</span>
+                  </div>
+                  <div className="w-[18%] flex">
+                    {ticket.numsPlayed.map((num) => (
+                      <div
+                        className={`${styles.ticketRowNum} ${
+                          userCurrentWinners.includes(num)
+                            ? "bg-green-700 text-slate-100"
+                            : "bg-slate-200 text-slate-900"
+                        }`}
+                      >
+                        {num}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="w-[5%] pl-1">
+                    {ticket.ticketWinnerNums.length}
+                  </div>
+                  <div className="w-[15%] pl-0.5">
+                    {formatNumber(ticket.amountWon)}
+                    <span className="pl-2">AK</span>
+                  </div>
+                  <div className="w-[25%] pl-0.5">{ticket.date}</div>
+                  <div className="w-[28%] pl-0.5">{ticket.id}</div>
                 </div>
-                <div className="w-[18%] flex">
-                  {ticket.numsPlayed.map((num) => (
-                    <div
-                      className={`${styles.ticketRowNum} ${
-                        userCurrentWinners.includes(num)
-                          ? "bg-green-700 text-slate-100"
-                          : "bg-slate-200 text-slate-900"
-                      }`}
-                    >
-                      {num}
-                    </div>
-                  ))}
+                <div className="flex items-center bg-slate-800 text-slate-200 tracking-wider gap-14 p-4 mb-4 rounded">
+                  <p className="pl-2">Ticket cost: 500 AK</p>
                 </div>
-                <div className="w-[5%] pl-1">
-                  {ticket.ticketWinnerNums.length}
-                </div>
-                <div className="w-[15%] pl-0.5">
-                  {formatNumber(ticket.amountWon)}
-                  <span className="pl-2">AK</span>
-                </div>
-                <div className="w-[25%] pl-0.5">{ticket.date}</div>
-                <div className="w-[28%] pl-0.5">{ticket.id}</div>
-              </div>
+              </>
             ))}
           </div>
           <div className="bg-slate-900 text-slate-100 tracking-widest p-4 mt-2 rounded mb-1">

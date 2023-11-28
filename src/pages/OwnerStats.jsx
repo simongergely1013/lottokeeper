@@ -42,6 +42,13 @@ const UserStats = () => {
     useSelector((state) => state.data);
   const dispatch = useDispatch();
 
+  const organicTickets = ownerTicketHistory.filter(
+    (ticket) => ticket.isGenerated === false
+  );
+  const generatedTickets = ownerTicketHistory.filter(
+    (ticket) => ticket.isGenerated === true
+  );
+
   const totalRevenue = ownerTicketHistory.length * 500;
   const totalPaidOut = ownerTicketHistory.reduce(
     (accumulator, currentValue) => accumulator + currentValue.amountWon,
@@ -49,16 +56,47 @@ const UserStats = () => {
   );
   const totalProfit = formatNumber(totalRevenue - totalPaidOut);
 
-  const hitsFrequency = countHitsFrequency(
-    ownerTicketHistory.map((ticket) => ticket.ticketWinnerNums.length)
+  const hitsFrequencyOrganic = countHitsFrequency(
+    organicTickets.map((ticket) => ticket.ticketWinnerNums.length)
   );
 
-  const dataPie = {
+  const hitsFrequencyGenerated = countHitsFrequency(
+    generatedTickets.map((ticket) => ticket.ticketWinnerNums.length)
+  );
+
+  const dataPieOrganic = {
     labels: ["0 hits", "1 hit", "2 hits", "3 hits", "4 hits", "5 hits"],
     datasets: [
       {
         label: "# of Hits",
-        data: Object.values(hitsFrequency),
+        data: Object.values(hitsFrequencyOrganic),
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const dataPieGenerated = {
+    labels: ["0 hits", "1 hit", "2 hits", "3 hits", "4 hits", "5 hits"],
+    datasets: [
+      {
+        label: "# of Hits",
+        data: Object.values(hitsFrequencyGenerated),
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -98,12 +136,18 @@ const UserStats = () => {
       {ownerCurrentWinners.length !== 0 && (
         <div className="w-full mt-10">
           <div className="w-full h-96 bg-slate-900 flex items-center p-8 mb-16 rounded">
-            <div className="w-[65%] h-full flex justify-center items-center border-slate-500 rounded p-6">
-              <div className="">
+            <div className="w-[65%] h-full flex justify-center items-center gap-8 border-slate-500 rounded p-6">
+              <div>
                 <h1 className="text-slate-200 text-center py-2 px-4 mb-2 border border-slate-700 tracking-wider rounded">
-                  Number of hits made per ticket
+                  Hits Frequency (OWNER)
                 </h1>
-                <Pie data={dataPie} />
+                <Pie data={dataPieOrganic} />
+              </div>
+              <div>
+                <h1 className="text-slate-200 text-center py-2 px-4 mb-2 border border-slate-700 tracking-wider rounded">
+                  Hits Frequency (Generated)
+                </h1>
+                <Pie data={dataPieGenerated} />
               </div>
             </div>
             <div className="w-[35%] h-full flex flex-col justify-center items-center border-slate-500 rounded text-slate-100 tracking-widest">

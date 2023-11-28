@@ -102,7 +102,7 @@ const UserStats = () => {
             <div className="w-[65%] h-full flex justify-center items-center border-slate-500 rounded p-6">
               <div className="">
                 <h1 className="text-slate-200 text-center py-2 px-4 mb-2 border border-slate-700 tracking-wider rounded">
-                  Number of hits made per ticket
+                  Hits Frequency
                 </h1>
                 <Pie data={dataPie} />
               </div>

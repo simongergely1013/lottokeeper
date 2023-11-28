@@ -3,6 +3,8 @@ import TicketNumber from "../components/TicketNumberOwner";
 import formatNumber from "../utilities/formatNumber";
 import { useSelector, useDispatch } from "react-redux";
 import { FaSort } from "react-icons/fa";
+import { TiShoppingCart } from "react-icons/ti";
+import { IoIosAddCircle } from "react-icons/io";
 import {
   addTicketOwner,
   generateTickets,
@@ -27,11 +29,13 @@ const styles = {
   gameInfo:
     "w-2/3 flex justify-center items-center text-slate-100 bg-slate-900 tracking-widest text-center rounded px-3 py-2",
   ticketButton:
-    "w-7/12 rounded bg-blue-600 text-slate-100 tracking-widest m-2 px-3 py-2 drop-shadow-xl hover:scale-110",
+    "w-7/12 flex justify-center items-center gap-2 rounded bg-blue-600 text-slate-100 tracking-widest m-2 px-3 py-2 drop-shadow-xl hover:scale-110",
   button:
     "w-2/3 rounded bg-blue-600 text-slate-100 tracking-widest px-3 py-2 drop-shadow-xl hover:scale-110",
   generateButton:
     "w-2/3 rounded bg-indigo-800 text-slate-100 tracking-widest px-3 py-2 drop-shadow-xl",
+  resetButton:
+    "w-2/3 rounded bg-blue-800 text-slate-100 tracking-widest px-3 py-2 drop-shadow-xl hover:scale-110",
   ticketHistory: "w-full flex flex-col",
   ticketRow:
     "w-full flex items-center justify-between p-4 rounded bg-slate-900 text-slate-200 tracking-widest mb-1",
@@ -90,6 +94,7 @@ const OwnerGame = () => {
     switch (true) {
       case alertCondition:
         alert(alertMessage);
+        break;
       case ownerCurrentSelectedNums.length < 5:
         return;
       default:
@@ -102,17 +107,16 @@ const OwnerGame = () => {
       alert(alertMessage);
     } else {
       dispatch(generateTickets(randomTickets));
+      setRandomTickets(0);
+      setRandomTicketsPrice(0);
     }
   };
 
   const handlePlay = () => {
-    switch (true) {
-      case alertCondition:
-        alert(alertMessage);
-      case ownerCurrentSelectedNums.length < 5:
-        return;
-      default:
-        dispatch(playOwner);
+    if (alertCondition) {
+      alert(alertMessage);
+    } else {
+      dispatch(playOwner);
     }
   };
 
@@ -155,11 +159,13 @@ const OwnerGame = () => {
             className={styles.ticketButton}
             onClick={() => handleAddTicket()}
           >
-            Add ticket to list
+            <IoIosAddCircle />
+            Add Ticket to List
           </button>
         </div>
         <div className={styles.ticketSideBar}>
           <div className={styles.gameInfo}>
+            <TiShoppingCart className="mr-3" />
             Total price:
             <span className="pl-2">{formatNumber(totalPrice)} AK</span>
           </div>
@@ -190,7 +196,7 @@ const OwnerGame = () => {
           <button className={styles.button} onClick={() => handleNewGame()}>
             New Game
           </button>
-          <button className={styles.button} onClick={() => handleReset()}>
+          <button className={styles.resetButton} onClick={() => handleReset()}>
             Reset to Default
           </button>
         </div>
