@@ -1,10 +1,8 @@
 import React from "react";
-import TicketNumber from "../components/TicketNumberUser";
-import formatNumber from "../utilities/formatNumber";
+import { useSelector, useDispatch } from "react-redux";
 import { FaSort } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
 import { IoIosAddCircle } from "react-icons/io";
-import { useSelector, useDispatch } from "react-redux";
 import {
   addTicketUser,
   playUser,
@@ -14,6 +12,8 @@ import {
   sortTicketHistoryByPayoutUser,
   sortTicketHistoryByDateUser,
 } from "../store/data/actions";
+import TicketNumber from "../components/TicketNumberUser";
+import formatNumber from "../utilities/formatNumber";
 
 const styles = {
   main: "w-full h-full flex flex-col items-center px-16 py-2 overflow-y-auto",
@@ -75,14 +75,12 @@ const UserGame = () => {
   const alertMessage = `${userName} doesn't have enough balance.`;
 
   const handleAddTicket = () => {
-    switch (true) {
-      case alertCondition:
-        alert(alertMessage);
-        break;
-      case userCurrentSelectedNums.length < 5:
-        return;
-      default:
-        dispatch(addTicketUser);
+    if (alertCondition) {
+      alert(alertMessage);
+    } else if (userCurrentSelectedNums.length < 5) {
+      return;
+    } else {
+      dispatch(addTicketUser);
     }
   };
 
@@ -124,13 +122,10 @@ const UserGame = () => {
           <h1 className={styles.title}>Place your numbers</h1>
           <div className={styles.numsContainer}>
             {nums.map((number) => (
-              <TicketNumber number={number} />
+              <TicketNumber key={number} number={number} />
             ))}
           </div>
-          <button
-            className={styles.ticketButton}
-            onClick={() => handleAddTicket()}
-          >
+          <button className={styles.ticketButton} onClick={handleAddTicket}>
             <IoIosAddCircle />
             Add to Ticket List
           </button>
@@ -141,13 +136,13 @@ const UserGame = () => {
             Total price:{" "}
             <span className="ml-1">{formatNumber(userTotalPrice)} AK</span>
           </div>
-          <button className={styles.button} onClick={() => handlePlay()}>
+          <button className={styles.button} onClick={handlePlay}>
             Play
           </button>
-          <button className={styles.button} onClick={() => handleNewGame()}>
+          <button className={styles.button} onClick={handleNewGame}>
             New Game
           </button>
-          <button className={styles.resetButton} onClick={() => handleReset()}>
+          <button className={styles.resetButton} onClick={handleReset}>
             Reset to Default
           </button>
         </div>
@@ -217,37 +212,29 @@ const UserGame = () => {
             </div>
             <div className="w-[5%] flex items-center gap-2">
               Hits{" "}
-              <FaSort
-                onClick={() => handleSortHits()}
-                className="cursor-pointer"
-              />
+              <FaSort onClick={handleSortHits} className="cursor-pointer" />
             </div>
             <div className="w-[17%] flex items-center gap-2 pl-2">
               Amount paid out{" "}
-              <FaSort
-                onClick={() => handleSortPayout()}
-                className="cursor-pointer"
-              />
+              <FaSort onClick={handleSortPayout} className="cursor-pointer" />
             </div>
             <div className="w-[28%] flex items-center gap-2 pl-2">
               Date played{" "}
-              <FaSort
-                onClick={() => handleSortDate()}
-                className="cursor-pointer"
-              />
+              <FaSort onClick={handleSortDate} className="cursor-pointer" />
             </div>
             <div className="w-[28%]">Ticket ID</div>
           </div>
           <div className={styles.ticketHistory}>
             {userTicketHistory.map((ticket, index) => (
-              <>
-                <div key={ticket.id} className={styles.ticketRow}>
+              <React.Fragment key={ticket.id}>
+                <div className={styles.ticketRow}>
                   <div className="w-[4%]">
                     #<span className="px-2">{index + 1}</span>
                   </div>
                   <div className="w-[18%] flex">
                     {ticket.numsPlayed.map((num) => (
                       <div
+                        key={num}
                         className={`${styles.ticketRowNum} ${
                           userCurrentWinners.includes(num)
                             ? "bg-green-700 text-slate-100"
@@ -271,7 +258,7 @@ const UserGame = () => {
                 <div className="flex items-center bg-slate-800 text-slate-200 tracking-wider gap-14 p-4 mb-4 rounded">
                   <p className="pl-2">Ticket cost: 500 AK</p>
                 </div>
-              </>
+              </React.Fragment>
             ))}
           </div>
           <div className="bg-slate-900 text-slate-100 tracking-widest p-4 mt-2 rounded mb-1">

@@ -1,14 +1,11 @@
 import React from "react";
-import formatNumber from "../utilities/formatNumber";
-import countHitsFrequency from "../utilities/countHitsFrequency";
-import { FaSort } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
+import { FaSort } from "react-icons/fa";
 import {
   sortTicketHistoryByHitsOwner,
   sortTicketHistoryByPayoutOwner,
   sortTicketHistoryByDateOwner,
 } from "../store/data/actions";
-
 import {
   Chart as ChartJS,
   ArcElement,
@@ -17,8 +14,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-
 import { Pie } from "react-chartjs-2";
+import formatNumber from "../utilities/formatNumber";
+import countHitsFrequency from "../utilities/countHitsFrequency";
+
 ChartJS.register(ArcElement, CategoryScale, Title, Tooltip, Legend);
 
 const styles = {
@@ -204,31 +203,22 @@ const UserStats = () => {
               </div>
               <div className="w-[8%] flex items-center pl-3 gap-2">
                 Hits{" "}
-                <FaSort
-                  onClick={() => handleSortHits()}
-                  className="cursor-pointer"
-                />
+                <FaSort onClick={handleSortHits} className="cursor-pointer" />
               </div>
               <div className="w-[20%] flex items-center gap-2">
                 Amount paid out{" "}
-                <FaSort
-                  onClick={() => handleSortPayout()}
-                  className="cursor-pointer"
-                />
+                <FaSort onClick={handleSortPayout} className="cursor-pointer" />
               </div>
               <div className="w-[25%] flex items-center gap-2">
                 Date played{" "}
-                <FaSort
-                  onClick={() => handleSortDate()}
-                  className="cursor-pointer"
-                />
+                <FaSort onClick={handleSortDate} className="cursor-pointer" />
               </div>
               <div className="w-[30%]">Ticket ID</div>
             </div>
             <div className={styles.ticketHistory}>
               {ownerTicketHistory.map((ticket, index) => (
-                <>
-                  <div key={ticket.id} className={styles.ticketRow}>
+                <React.Fragment key={ticket.id}>
+                  <div className={styles.ticketRow}>
                     <div className="w-[5%]">
                       #<span className="px-2">{index + 1}</span>
                     </div>
@@ -264,7 +254,7 @@ const UserStats = () => {
                       </span>
                     </p>
                   </div>
-                </>
+                </React.Fragment>
               ))}
             </div>
             <div className="flex flex-col justify-center gap-4 bg-slate-900 text-slate-100 tracking-widest p-5 mt-2 rounded mb-1">

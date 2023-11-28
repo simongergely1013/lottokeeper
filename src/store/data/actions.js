@@ -41,7 +41,7 @@ export const playUser = (dispatch, getState) => {
         let winnerNums = [];
         for(let i = 0; i < 5; i++){
             let num = getRandomIntInclusive(1,39)
-        while(winnerNums.includes(num)){
+            while(winnerNums.includes(num)){
                 num = getRandomIntInclusive(1,39)
             }
             winnerNums.push(num)
@@ -62,9 +62,9 @@ export const sortTicketHistoryByHitsUser = (dispatch, getState) => {
     const hitsDescending = !state.data.userHitsDescending;
     let ticketHistorySortedByHits = [];
     if(hitsDescending){
-        ticketHistorySortedByHits = userTicketHistory.sort((a,b) => b.ticketWinnerNums.length - a.ticketWinnerNums.length);
+        ticketHistorySortedByHits = [...userTicketHistory].sort((a,b) => b.ticketWinnerNums.length - a.ticketWinnerNums.length);
     } else if(!hitsDescending) {
-        ticketHistorySortedByHits = userTicketHistory.sort((a,b) => a.ticketWinnerNums.length - b.ticketWinnerNums.length);
+        ticketHistorySortedByHits = [...userTicketHistory].sort((a,b) => a.ticketWinnerNums.length - b.ticketWinnerNums.length);
     }
     dispatch({type: ACTIONS.USER_SORT_TICKET_HISTORY_BY_HITS, payload: ticketHistorySortedByHits})
 }
@@ -75,9 +75,9 @@ export const sortTicketHistoryByPayoutUser = (dispatch, getState) => {
     const payoutDescending = !state.data.userPayoutDescending;
     let ticketHistorySortedByPayout = [];
     if(payoutDescending){
-        ticketHistorySortedByPayout = userTicketHistory.sort((a,b) => b.amountWon - a.amountWon);
+        ticketHistorySortedByPayout = [...userTicketHistory].sort((a,b) => b.amountWon - a.amountWon);
     } else if([!payoutDescending]){
-        ticketHistorySortedByPayout = userTicketHistory.sort((a,b) => a.amountWon - b.amountWon);
+        ticketHistorySortedByPayout = [...userTicketHistory].sort((a,b) => a.amountWon - b.amountWon);
     }
     dispatch({type: ACTIONS.USER_SORT_TICKET_HISTORY_BY_PAYOUT, payload: ticketHistorySortedByPayout})
 }
@@ -88,9 +88,9 @@ export const sortTicketHistoryByDateUser = (dispatch, getState) => {
     const dateDescending = !state.data.userDateDescending;
     let ticketHistorySortedByDate = [];
     if(dateDescending){
-        ticketHistorySortedByDate = userTicketHistory.sort((a,b) => new Date(b.date) - new Date(a.date));
+        ticketHistorySortedByDate = [...userTicketHistory].sort((a,b) => new Date(b.date) - new Date(a.date));
     } else if([!dateDescending]){
-        ticketHistorySortedByDate = userTicketHistory.sort((a,b) => new Date(a.date) - new Date(b.date));
+        ticketHistorySortedByDate = [...userTicketHistory].sort((a,b) => new Date(a.date) - new Date(b.date));
     }
     dispatch({type: ACTIONS.USER_SORT_TICKET_HISTORY_BY_DATE, payload: ticketHistorySortedByDate})
 }
@@ -140,7 +140,7 @@ export const playOwner = (dispatch, getState) => {
         let winnerNums = [];
         for(let i = 0; i < 5; i++){
             let num = getRandomIntInclusive(1,39)
-        while(winnerNums.includes(num)){
+            while(winnerNums.includes(num)){
                 num = getRandomIntInclusive(1,39)
             }
             winnerNums.push(num)
@@ -161,9 +161,9 @@ export const sortTicketHistoryByHitsOwner = (dispatch, getState) => {
     const hitsDescending = !state.data.ownerHitsDescending;
     let ticketHistorySortedByHits = [];
     if(hitsDescending){
-        ticketHistorySortedByHits = ownerTicketHistory.sort((a,b) => b.ticketWinnerNums.length - a.ticketWinnerNums.length);
+        ticketHistorySortedByHits = [...ownerTicketHistory].sort((a,b) => b.ticketWinnerNums.length - a.ticketWinnerNums.length);
     } else if(!hitsDescending) {
-        ticketHistorySortedByHits = ownerTicketHistory.sort((a,b) => a.ticketWinnerNums.length - b.ticketWinnerNums.length);
+        ticketHistorySortedByHits = [...ownerTicketHistory].sort((a,b) => a.ticketWinnerNums.length - b.ticketWinnerNums.length);
     }
     dispatch({type: ACTIONS.OWNER_SORT_TICKET_HISTORY_BY_HITS, payload: ticketHistorySortedByHits})
 }
@@ -174,9 +174,9 @@ export const sortTicketHistoryByPayoutOwner = (dispatch, getState) => {
     const payoutDescending = !state.data.ownerPayoutDescending;
     let ticketHistorySortedByPayout = [];
     if(payoutDescending){
-        ticketHistorySortedByPayout = ownerTicketHistory.sort((a,b) => b.amountWon - a.amountWon);
+        ticketHistorySortedByPayout = [...ownerTicketHistory].sort((a,b) => b.amountWon - a.amountWon);
     } else if([!payoutDescending]){
-        ticketHistorySortedByPayout = ownerTicketHistory.sort((a,b) => a.amountWon - b.amountWon);
+        ticketHistorySortedByPayout = [...ownerTicketHistory].sort((a,b) => a.amountWon - b.amountWon);
     }
     dispatch({type: ACTIONS.OWNER_SORT_TICKET_HISTORY_BY_PAYOUT, payload: ticketHistorySortedByPayout})
 }
@@ -187,9 +187,9 @@ export const sortTicketHistoryByDateOwner = (dispatch, getState) => {
     const dateDescending = !state.data.ownerDateDescending;
     let ticketHistorySortedByDate = [];
     if(dateDescending){
-        ticketHistorySortedByDate = ownerTicketHistory.sort((a,b) => new Date(b.date) - new Date(a.date));
+        ticketHistorySortedByDate = [...ownerTicketHistory].sort((a,b) => new Date(b.date) - new Date(a.date));
     } else if([!dateDescending]){
-        ticketHistorySortedByDate = ownerTicketHistory.sort((a,b) => new Date(a.date) - new Date(b.date));
+        ticketHistorySortedByDate = [...ownerTicketHistory].sort((a,b) => new Date(a.date) - new Date(b.date));
     }
     dispatch({type: ACTIONS.OWNER_SORT_TICKET_HISTORY_BY_DATE, payload: ticketHistorySortedByDate})
 }

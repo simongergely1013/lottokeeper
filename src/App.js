@@ -1,14 +1,16 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import CreateUserNameModal from './pages/CreateUserNameModal';
 import Main from './pages/Main';
-import NavBar from './components/NavBar';
-import TopNavBar from './components/TopNavBar';
 import UserGame from './pages/UserGame';
 import UserStats from './pages/UserStats';
 import OwnerGame from './pages/OwnerGame';
 import OwnerStats from './pages/OwnerStats';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import SideNotes from './pages/SideNotes';
+import NavBar from './components/NavBar';
+import TopNavBar from './components/TopNavBar';
+
 
 const styles = {
   wrapper: 'h-screen w-screen flex',
@@ -32,6 +34,7 @@ const App = () => {
         <Route path='/user/stats' element={<UserStats/>}/>
         <Route path='/owner/game' element={<OwnerGame/>}/>
         <Route path='/owner/stats' element={<OwnerStats/>}/>
+        <Route path='/sidenotes' element={<SideNotes/>}/>
       </Routes>
      </div>
      </>}
