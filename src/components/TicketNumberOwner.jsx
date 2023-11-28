@@ -32,7 +32,6 @@ const TicketNumberOwner = ({ number }) => {
 
   return (
     <div
-      key={number}
       className={`${styles.number} ${
         isActive ? "bg-green-700 text-slate-100" : "bg-slate-100 text-slate-900"
       }`}

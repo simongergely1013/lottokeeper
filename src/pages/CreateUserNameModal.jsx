@@ -19,7 +19,12 @@ const CreateUserName = () => {
   const [userName, setUsername] = useState("");
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {
+  const handleChange = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     dispatch(createUserName(userName));
     setUsername("");
   };
@@ -34,13 +39,13 @@ const CreateUserName = () => {
           placeholder="Enter username..."
           className={styles.input}
           value={userName}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={handleChange}
         />
         <div className={styles.submitDiv}>
           <input
             type="submit"
             className={styles.submit}
-            onClick={() => handleSubmit()}
+            onClick={handleSubmit}
           />
         </div>
       </form>

@@ -96,6 +96,9 @@ const NavBar = () => {
           </div>
         </div>
       </div>
+      <div className="absolute bottom-8 p-1 tracking-widest rounded hover:scale-110">
+        <Link to="/sidenotes">side notes</Link>
+      </div>
     </div>
   );
 };

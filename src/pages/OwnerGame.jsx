@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import TicketNumber from "../components/TicketNumberOwner";
-import formatNumber from "../utilities/formatNumber";
 import { useSelector, useDispatch } from "react-redux";
 import { FaSort } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
@@ -15,6 +13,8 @@ import {
   sortTicketHistoryByPayoutOwner,
   sortTicketHistoryByDateOwner,
 } from "../store/data/actions";
+import TicketNumber from "../components/TicketNumberOwner";
+import formatNumber from "../utilities/formatNumber";
 
 const styles = {
   main: "w-full h-full flex flex-col items-center px-16 py-10 overflow-y-auto",
@@ -85,20 +85,19 @@ const OwnerGame = () => {
   const alertCondition = totalPrice > userBalance;
   const alertMessage = `${ownerName} doesn't have enough balance.`;
 
-  const handleNumberChange = (value) => {
+  const handleNumberChange = (e) => {
+    const value = e.target.value;
     setRandomTickets(value);
     setRandomTicketsPrice(value * 500);
   };
 
   const handleAddTicket = () => {
-    switch (true) {
-      case alertCondition:
-        alert(alertMessage);
-        break;
-      case ownerCurrentSelectedNums.length < 5:
-        return;
-      default:
-        dispatch(addTicketOwner);
+    if (alertCondition) {
+      alert(alertMessage);
+    } else if (ownerCurrentSelectedNums.length < 5) {
+      return;
+    } else {
+      dispatch(addTicketOwner);
     }
   };
 
@@ -152,13 +151,10 @@ const OwnerGame = () => {
           <h1 className={styles.title}>Place your numbers</h1>
           <div className={styles.numsContainer}>
             {nums.map((number) => (
-              <TicketNumber number={number} />
+              <TicketNumber key={number} number={number} />
             ))}
           </div>
-          <button
-            className={styles.ticketButton}
-            onClick={() => handleAddTicket()}
-          >
+          <button className={styles.ticketButton} onClick={handleAddTicket}>
             <IoIosAddCircle />
             Add Ticket to List
           </button>
@@ -178,25 +174,25 @@ const OwnerGame = () => {
                 min={0}
                 placeholder="0"
                 value={randomTickets}
-                onChange={(e) => handleNumberChange(e.target.value)}
+                onChange={handleNumberChange}
               />
             </div>
           </div>
           {randomTickets > 0 && (
             <button
               className={styles.generateButton}
-              onClick={() => handleGenerateTickets()}
+              onClick={handleGenerateTickets}
             >
               Generate Random Tickets
             </button>
           )}
-          <button className={styles.button} onClick={() => handlePlay()}>
+          <button className={styles.button} onClick={handlePlay}>
             Play
           </button>
-          <button className={styles.button} onClick={() => handleNewGame()}>
+          <button className={styles.button} onClick={handleNewGame}>
             New Game
           </button>
-          <button className={styles.resetButton} onClick={() => handleReset()}>
+          <button className={styles.resetButton} onClick={handleReset}>
             Reset to Default
           </button>
         </div>
@@ -242,6 +238,7 @@ const OwnerGame = () => {
                 <div className="w-[25%] flex">
                   {ticket.numsPlayed.map((num) => (
                     <div
+                      key={num}
                       className={`${styles.ticketRowNum} bg-slate-200 text-slate-900`}
                     >
                       {num}
@@ -270,37 +267,29 @@ const OwnerGame = () => {
             </div>
             <div className="w-[8%] flex items-center pl-3 gap-2">
               Hits{" "}
-              <FaSort
-                onClick={() => handleSortHits()}
-                className="cursor-pointer"
-              />
+              <FaSort onClick={handleSortHits} className="cursor-pointer" />
             </div>
             <div className="w-[20%] flex items-center gap-2">
               Amount paid out{" "}
-              <FaSort
-                onClick={() => handleSortPayout()}
-                className="cursor-pointer"
-              />
+              <FaSort onClick={handleSortPayout} className="cursor-pointer" />
             </div>
             <div className="w-[25%] flex items-center gap-2">
               Date played{" "}
-              <FaSort
-                onClick={() => handleSortDate()}
-                className="cursor-pointer"
-              />
+              <FaSort onClick={handleSortDate} className="cursor-pointer" />
             </div>
             <div className="w-[30%]">Ticket ID</div>
           </div>
           <div className={styles.ticketHistory}>
             {ownerTicketHistory.map((ticket, index) => (
-              <>
-                <div key={ticket.id} className={styles.ticketRow}>
+              <React.Fragment key={ticket.id}>
+                <div className={styles.ticketRow}>
                   <div className="w-[5%]">
                     #<span className="px-2">{index + 1}</span>
                   </div>
                   <div className="w-[15%] flex">
                     {ticket.numsPlayed.map((num) => (
                       <div
+                        key={num}
                         className={`${styles.ticketRowNum} ${
                           ownerCurrentWinners.includes(num)
                             ? "bg-green-700 text-slate-100"
@@ -328,7 +317,7 @@ const OwnerGame = () => {
                     <span>{ticket.isGenerated ? "Generated" : ownerName}</span>
                   </p>
                 </div>
-              </>
+              </React.Fragment>
             ))}
           </div>
           <div className="flex flex-col justify-center gap-4 bg-slate-900 text-slate-100 tracking-widest p-5 mt-2 rounded mb-1">
