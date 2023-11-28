@@ -31,7 +31,7 @@ export const ACTIONS = {
 
 
 const initialState = {
-    // user
+    // USER
         userName: "",
         userBalance: 10000,
         userTicketHistory: [],
@@ -42,7 +42,7 @@ const initialState = {
         userPayoutDescending: false,
         userDateDescending: false,
     
-    // owner
+    // OWNER
         ownerName: "OWNER",
         ownerBalance: 0,
         ownerTicketHistory: [],

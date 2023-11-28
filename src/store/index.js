@@ -14,11 +14,6 @@ const rootReducer = combineReducers({
     data: persistReducer(dataPersistConfig, data),
 });
 
-// const persistConfig = {
-//     key: 'root',
-//     storage,
-//   }
-
 const persistedReducer = persistReducer(dataPersistConfig, rootReducer)
 
 export const store = createStore(persistedReducer, applyMiddleware(thunk));
